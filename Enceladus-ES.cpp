@@ -12,7 +12,7 @@ Enceladus-ES - software for encryption sensitive information. Made by Innokentiy
 This program is under development and may have flaws.
 Always back up your data before encrypting. I am not responsible if you lose your information.
 I do not guarantee that my software will protect your data 100%.
-partially based on https://github.com/number571/C/tree/master/Cryptography
+The implementation of cryptographic methods for C++ is partially based on https://github.com/number571/C/tree/master/Cryptography
 */
 /*Example usage
 * Welcome to the Enceladus-ES (Encryption Software)
