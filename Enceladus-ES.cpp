@@ -175,7 +175,6 @@ int main() {
             key256b[i] = input_key[i];
         }
 
-        cout << input_key << "\n";
         uint8_t ch;
         size_t length = 0x00;
 
