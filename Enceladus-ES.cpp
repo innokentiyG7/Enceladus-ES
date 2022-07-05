@@ -170,7 +170,7 @@ int main() {
         cout << "key: ";
         cin >> input_key;
         cin.ignore();
-
+        cout << "plaintext: ";
         for (int i = 0; i < input_key.length(); i++) {
             key256b[i] = input_key[i];
         }
