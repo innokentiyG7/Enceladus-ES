@@ -4,5 +4,5 @@
 This program is under development and may have flaws.
 Always back up your data before encrypting. I am not responsible if you lose your information.
 I do not guarantee that my software will protect your data 100%.
-
+The implementation of cryptographic methods for C++ is partially based on https://github.com/number571/C/tree/master/Cryptography
 Files:<li>Enceladus-ES.exe  - program compiled via Visual Studio </li><li>Enceladus-ES.cpp  - source code</li>
