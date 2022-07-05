@@ -182,10 +182,9 @@ int main() {
         while ((ch = getchar()) != '\n' && length < Magma_BUFF_SIZE - 1) {
             buffer[length++] = ch;
         }
-        cout << buffer << "\n";
         buffer[length] = '\0';
 
-        cout << "\nOpen message: ";
+        cout << "\nplaintext: ";
         print_array(buffer, length); cout << "\n";
 
         length = GOST_28147(encrypted, 'E', key256b, buffer, length);
