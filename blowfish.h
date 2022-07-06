@@ -319,6 +319,15 @@ void print_array(uint8_t* array, size_t length) {
     }
     cout << "\n";
 };
+string return_array(uint8_t* array, size_t length) {
+    string A = "";
+    for (int i = 0; i < length; ++i) {
+        int b = (int)(array[i]);
+        A = A + to_string(b) + " ";
+    }
+    return A;
+};
+
 string print_text(uint8_t* array, int a) {
     int n = a;
     string text;
