@@ -39,7 +39,6 @@ key: c2htYXk/YXgtK2M8bHMyJGJySzlwZ2xPblh1aElRdGN1cVdlQXd2SmxNa1BoJGhKQ3BWaVQ9RlV
 decoded: The quick brown fox jumps over the lazy dog
 
 */
-
 int main() {
     int choice, choice2;
     cout << "Welcome to the Enceladus-ES (Encryption Software) v1.5 \nAvailable encryption methods: \n(1) XOR encryption  (for one time messages) \n(2) Blowfish \n(3) Magma encryption (GOST 28147-89)\nChoice method of enryption: ";
@@ -63,7 +62,7 @@ int main() {
             ciphertext = xor_cipher(plaintext, key, n);
             cout << "ciphertext (base64): " << b64encode(ciphertext) << endl;
         }if (choice2 == 2) {
-            cout << "Decode\nciphertext: ";
+            cout << "Decoding\nciphertext: ";
             cin >> tempciphertext;
             ciphertext = b64decode(tempciphertext);
             n = ciphertext.length();
@@ -82,31 +81,12 @@ int main() {
         if (choice2 == 1) {
             cout << "Encoding\n";
             char choice3;
-            cout << "Do you have generated keys? Y/n: ";
+            cout << "Generate key? Y/n: ";
             cin >> choice3;
-            if ((choice3 == 'Y') || (choice3 == 'y')) {
-                uint8_t encrypted[Blowfish_BUFF_SIZE], decrypted[Blowfish_BUFF_SIZE], buffer[Blowfish_BUFF_SIZE];
-                uint8_t key64b[56] = "";
-                string inputKey;
-                cout << "key: ";
-                cin >> inputKey;
-                for (int i = 0; i < inputKey.length(); i++) {
-                    key64b[i] = inputKey[i];
-                }
-                cout << "plaintext: ";
-                cin.ignore();
-                size_t length = input_string(buffer);
-                cout << "key: " << inputKey << endl;
-                key_extension(Keys32b, key64b, 448);
 
-                length = blowfish(encrypted, 'E', Keys32b, buffer, length);
-                cout << "n: " << length << endl;
-                cout << "ciphertext in decimal: ";
-                print_array(encrypted, length);
-            }
-            else if ((choice3 == 'N') || (choice3 == 'n')) {
-                uint8_t encrypted[Blowfish_BUFF_SIZE], decrypted[Blowfish_BUFF_SIZE], buffer[Blowfish_BUFF_SIZE];
-                uint8_t key64b[56] = "";
+            uint8_t encrypted[Blowfish_BUFF_SIZE], decrypted[Blowfish_BUFF_SIZE], buffer[Blowfish_BUFF_SIZE];
+            uint8_t key64b[56] = "";
+            if ((choice3 == 'Y') || (choice3 == 'y')) {      
                 string genKey = genpass(56);
                 for (int i = 0; i < genKey.length(); i++) {
                     key64b[i] = genKey[i];
@@ -119,12 +99,30 @@ int main() {
                 length = blowfish(encrypted, 'E', Keys32b, buffer, length);
                 cout << "n: " << length << endl;
                 cout << "ciphertext in decimal: ";
+                print_array(encrypted, length);        
+                
+            }
+            else if ((choice3 == 'N') || (choice3 == 'n')) {
+                string inputKey;
+                cout << "key: ";
+                cin >> inputKey;
+                for (int i = 0; i < inputKey.length(); i++) {
+                    key64b[i] = inputKey[i];
+                }
+                cout << "plaintext: ";
+                cin.ignore();
+                size_t length = input_string(buffer);
+                key_extension(Keys32b, key64b, 448);
+
+                length = blowfish(encrypted, 'E', Keys32b, buffer, length);
+                cout << "n: " << length << endl;
+                cout << "ciphertext in decimal: ";
                 print_array(encrypted, length);
+
             }
         }
         else if (choice2 == 2) {
             cout << "Decoding\n";
-
             uint8_t encrypted[Blowfish_BUFF_SIZE], decrypted[Blowfish_BUFF_SIZE], buffer[Blowfish_BUFF_SIZE];
             uint8_t key64b[56] = "";
             string input_key;
@@ -145,16 +143,14 @@ int main() {
                 uint8_t v = static_cast<uint8_t>(b);
                 A[i] = v;
             }
-            for (int i = 0; i < n; i++) {
-                cout << (int)A[i] << " ";
-            }
+            // for (int i = 0; i < n; i++) {
+            //    cout << (int)A[i] << " ";
+            //}
             size_t length = n;
             key_extension(Keys32b, key64b, 448);
             length = blowfish(decrypted, 'D', Keys32b, A, length);
             cout << "\n\nplaintext: ";
             print_text_dec(decrypted, n);
-
-
         }
     }
     else if (choice == 3) {
@@ -162,38 +158,63 @@ int main() {
     cout << "\n(1) Encode\n(2) Decode \n: ";
     cin >> choice2;
     if (choice2 == 1) {
-        cout << "Encode\n";
+        cout << "Encoding\n";
+        char choice3;
+        cout << "Generate key? Y/n: ";
+        cin >> choice3;
+
         uint8_t encrypted[Magma_BUFF_SIZE], decrypted[Magma_BUFF_SIZE], buffer[Magma_BUFF_SIZE];
         uint8_t key256b[32] = "";
-        string input_key;
-
-        cout << "key: ";
-        cin >> input_key;
-        cin.ignore();
-        cout << "plaintext: ";
-        for (int i = 0; i < input_key.length(); i++) {
-            key256b[i] = input_key[i];
-        }
-
         uint8_t ch;
         size_t length = 0x00;
 
-        while ((ch = getchar()) != '\n' && length < Magma_BUFF_SIZE - 1) {
-            buffer[length++] = ch;
+        if ((choice3 == 'Y') || (choice3 == 'y')) {       
+            string genKey = genpass(32);
+            for (int i = 0; i < genKey.length(); i++) {
+                key256b[i] = genKey[i];
+            }
+            cout << "key: " << genKey;
+            cin.ignore();
+            cout << "\nplaintext: ";
+
+            while ((ch = getchar()) != '\n' && length < Magma_BUFF_SIZE - 1) {
+                buffer[length++] = ch;
+            }
+            buffer[length] = '\0';
+
+            length = GOST_28147(encrypted, 'E', key256b, buffer, length);
+
+            cout << "n: " << length << "\n";
+            cout << "ciphertext in decimal: ";
+            print_array(encrypted, length);
         }
-        buffer[length] = '\0';
+        else if ((choice3 == 'N') || (choice3 == 'n')) {
+            string input_key;
+            cout << "key: ";
+            cin >> input_key;
+            cin.ignore();
+            cout << "plaintext: ";
+            for (int i = 0; i < input_key.length(); i++) {
+                key256b[i] = input_key[i];
+            }
 
-        cout << "\nplaintext: ";
-        print_array(buffer, length); cout << "\n";
+            while ((ch = getchar()) != '\n' && length < Magma_BUFF_SIZE - 1) {
+                buffer[length++] = ch;
+            }
+            buffer[length] = '\0';
 
-        length = GOST_28147(encrypted, 'E', key256b, buffer, length);
- 
-        cout << "n: " << length << "\n";
-        cout << "ciphertext in decimal: ";
-        print_array(encrypted, length);
+            //cout << "\nplaintext: ";
+            //print_array(buffer, length); cout << "\n";
+
+            length = GOST_28147(encrypted, 'E', key256b, buffer, length);
+
+            cout << "n: " << length << "\n";
+            cout << "ciphertext in decimal: ";
+            print_array(encrypted, length);
+        }  
     }
     else if (choice2 == 2) {
-        cout << "Decode\n";
+        cout << "Decoding\n";
         uint8_t encrypted[Magma_BUFF_SIZE], decrypted[Magma_BUFF_SIZE], buffer[Magma_BUFF_SIZE];
         uint8_t key256b[32] = "";
         string input_key;
@@ -214,12 +235,9 @@ int main() {
             uint8_t v = static_cast<uint8_t>(b);
             A[i] = v;
         }
-        for (int i = 0; i < n; i++) {
-            cout << (int)A[i] << " ";
-        }
         size_t length = n;
         length = GOST_28147(decrypted, 'D', key256b, A, length);
-        printf("decrypted message: "); print_text_dec(decrypted, length);
+        printf("\nplaintext: "); print_text_dec(decrypted, length);
     }
 }
     cout << "\nPress any key to exit.";
