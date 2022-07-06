@@ -1,4 +1,5 @@
-#Enceladus-ES
+<b>Enceladus-ES</b>
+
 ![image](https://user-images.githubusercontent.com/99981781/177493706-37f8a4da-103a-4898-8473-c2d51da3c453.png)
 <b>Enceladus-ES </b>(<i>Encryption Software</i>) - software for encryption sensitive information. Made by Innokentiy Gerasimov.
 This program is under development and may have flaws.
