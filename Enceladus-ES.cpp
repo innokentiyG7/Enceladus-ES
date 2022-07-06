@@ -41,7 +41,7 @@ decoded: The quick brown fox jumps over the lazy dog
 */
 int main() {
     int choice, choice2;
-    cout << "Welcome to the Enceladus-ES (Encryption Software) v1.5 \nAvailable encryption methods: \n(1) XOR encryption  (for one time messages) \n(2) Blowfish \n(3) Magma encryption (GOST 28147-89)\nChoice method of enryption: ";
+    cout << "Welcome to the Enceladus-ES (Encryption Software) v1.5.2 \nAvailable encryption methods: \n(1) XOR encryption  (for one time messages) \n(2) Blowfish \n(3) Magma encryption (GOST 28147-89)\nChoice method of enryption: ";
     cin >> choice;
     if (choice == 1) {
         //XOR cipher
